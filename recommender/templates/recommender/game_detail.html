@@ -1,0 +1,89 @@
+{% extends "recommender/base.html" %}
+
+{% block title %}
+{{ game.title }} | CineGame
+{% endblock %}
+
+{% block content %}
+<section class="detail-page">
+    <a class="back-link" href="{% url 'recommender:home' %}">
+        ← Powrót do strony głównej
+    </a>
+
+    <div class="detail-layout">
+        <div class="detail-poster game-placeholder">
+            <span>Gra</span>
+        </div>
+
+        <div class="detail-content">
+            <p class="section-label">Gra</p>
+
+            <h1>{{ game.title }}</h1>
+
+            <div class="detail-meta">
+                {% if game.release_year %}
+                <span>Rok: {{ game.release_year }}</span>
+                {% endif %}
+            </div>
+
+            {% if game.developer %}
+            <div class="detail-group">
+                <h2>Producent</h2>
+                <p>{{ game.developer }}</p>
+            </div>
+            {% endif %}
+
+            {% if game.publisher %}
+            <div class="detail-group">
+                <h2>Wydawca</h2>
+                <p>{{ game.publisher }}</p>
+            </div>
+            {% endif %}
+
+            <div class="detail-group">
+                <h2>Opis</h2>
+
+                {% if game.description %}
+                <p>{{ game.description }}</p>
+                {% else %}
+                <p class="muted-text">
+                    Brak opisu gry.
+                </p>
+                {% endif %}
+            </div>
+
+            <div class="detail-group">
+                <h2>Gatunki</h2>
+
+                <div class="tags-list">
+                    {% for genre in game.genres.all %}
+                    <span class="tag">
+                        {{ genre.name }}
+                    </span>
+                    {% empty %}
+                    <p class="muted-text">
+                        Nie przypisano gatunków.
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="detail-group">
+                <h2>Platformy</h2>
+
+                <div class="tags-list">
+                    {% for platform in game.platforms.all %}
+                    <span class="tag">
+                        {{ platform.name }}
+                    </span>
+                    {% empty %}
+                    <p class="muted-text">
+                        Nie przypisano platform.
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

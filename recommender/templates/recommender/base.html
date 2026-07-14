@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>
+        {% block title %}
+        System rekomendacji
+        {% endblock %}
+    </title>
+
+    <link rel="stylesheet" href="{% static 'recommender/css/style.css' %}">
+
+    {% block extra_head %}
+    {% endblock %}
+</head>
+
+<body>
+    <header class="site-header">
+        <div class="container navigation">
+            <a class="logo" href="{% url 'recommender:home' %}">
+                CineGame
+            </a>
+
+            <nav class="nav-links" aria-label="Główna nawigacja">
+                <a href="{% url 'recommender:home' %}">
+                    Strona główna
+                </a>
+            
+                <a href="{% url 'recommender:movie_list' %}">
+                    Filmy
+                </a>
+            
+                <a href="{% url 'recommender:game_list' %}">
+                    Gry
+                </a>
+            
+                <a href="/admin/">
+                    Panel administratora
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>
+                System rekomendacji filmów i gier
+                &copy; {% now "Y" %}
+            </p>
+        </div>
+    </footer>
+
+    {% block scripts %}
+    {% endblock %}
+</body>
+
+</html>

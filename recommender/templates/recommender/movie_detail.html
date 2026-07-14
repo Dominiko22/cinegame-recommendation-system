@@ -1,0 +1,78 @@
+{% extends "recommender/base.html" %}
+
+{% block title %}
+{{ movie.title }} | CineGame
+{% endblock %}
+
+{% block content %}
+<section class="detail-page">
+    <a class="back-link" href="{% url 'recommender:home' %}">
+        ← Powrót do strony głównej
+    </a>
+
+    <div class="detail-layout">
+        <div class="detail-poster movie-placeholder">
+            <span>Film</span>
+        </div>
+
+        <div class="detail-content">
+            <p class="section-label">
+                Film
+            </p>
+
+            <h1>{{ movie.title }}</h1>
+
+            <div class="detail-meta">
+                {% if movie.release_year %}
+                <span>
+                    Rok: {{ movie.release_year }}
+                </span>
+                {% endif %}
+
+                {% if movie.duration_min %}
+                <span>
+                    Czas: {{ movie.duration_min }} min
+                </span>
+                {% endif %}
+            </div>
+
+            {% if movie.director %}
+            <div class="detail-group">
+                <h2>Reżyser</h2>
+                <p>{{ movie.director }}</p>
+            </div>
+            {% endif %}
+
+            <div class="detail-group">
+                <h2>Opis</h2>
+
+                {% if movie.description %}
+                <p>{{ movie.description }}</p>
+                {% else %}
+                <p class="muted-text">
+                    Brak opisu filmu.
+                </p>
+                {% endif %}
+            </div>
+
+            <div class="detail-group">
+                <h2>Gatunki</h2>
+
+                {% if movie.genres.all %}
+                <div class="tags-list">
+                    {% for genre in movie.genres.all %}
+                    <span class="tag">
+                        {{ genre.name }}
+                    </span>
+                    {% empty %}
+                    <p class="muted-text">
+                        Nie przypisano gatunków.
+                    </p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

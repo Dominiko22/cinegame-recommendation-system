@@ -1,0 +1,132 @@
+{% extends "recommender/base.html" %}
+
+{% block title %}
+Strona główna | CineGame
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <p class="hero-label">
+        System rekomendacyjny
+    </p>
+
+    <h1>
+        Odkrywaj filmy i gry dopasowane do Ciebie
+    </h1>
+
+    <p class="hero-description">
+        Oceniaj filmy i gry, zapisuj swoje zainteresowania
+        i otrzymuj spersonalizowane rekomendacje.
+    </p>
+</section>
+
+<section class="content-section">
+    <div class="section-heading">
+        <div>
+            <p class="section-label">Katalog</p>
+            <h2>Filmy</h2>
+        </div>
+
+        <div class="section-actions">
+            <span class="item-count">
+                {{ movies|length }} pozycji
+            </span>
+
+            <a class="catalog-link" href="{% url 'recommender:movie_list' %}">
+                Zobacz wszystkie
+            </a>
+        </div>
+    </div>
+
+    {% if movies %}
+    <div class="cards-grid">
+        {% for movie in movies %}
+        <a class="media-card-link" href="{% url 'recommender:movie_detail' movie.movie_id %}">
+            <article class="media-card">
+                <div class="media-card-image movie-placeholder">
+                    <span>Film</span>
+                </div>
+
+                <div class="media-card-content">
+                    <h3>{{ movie.title }}</h3>
+
+                    <p>
+                        {% if movie.release_year %}
+                        Rok wydania: {{ movie.release_year }}
+                        {% else %}
+                        Rok wydania: brak danych
+                        {% endif %}
+                    </p>
+
+                    {% if movie.director %}
+                    <p>
+                        Reżyser: {{ movie.director }}
+                    </p>
+                    {% endif %}
+                </div>
+            </article>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Brak filmów w bazie.</p>
+    </div>
+    {% endif %}
+</section>
+
+<section class="content-section">
+    <div class="section-heading">
+        <div>
+            <p class="section-label">Katalog</p>
+            <h2>Gry</h2>
+        </div>
+
+        <div class="section-actions">
+            <span class="item-count">
+                {{ games|length }} pozycji
+            </span>
+
+            <a class="catalog-link" href="{% url 'recommender:game_list' %}">
+                Zobacz wszystkie
+            </a>
+        </div>
+    </div>
+
+    {% if games %}
+    <div class="cards-grid">
+        {% for game in games %}
+        <a class="media-card-link" href="{% url 'recommender:game_detail' game.game_id %}">
+            <article class="media-card">
+                <div class="media-card-image game-placeholder">
+                    <span>Gra</span>
+                </div>
+
+                <div class="media-card-content">
+                    <h3>{{ game.title }}</h3>
+
+                    <p>
+                        {% if game.release_year %}
+                        Rok wydania: {{ game.release_year }}
+                        {% else %}
+                        Rok wydania: brak danych
+                        {% endif %}
+                    </p>
+
+                    {% if game.developer %}
+                    <p>
+                        Producent: {{ game.developer }}
+                    </p>
+                    {% endif %}
+                </div>
+            </article>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Brak gier w bazie.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

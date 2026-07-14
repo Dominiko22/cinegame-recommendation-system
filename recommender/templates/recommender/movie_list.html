@@ -1,0 +1,88 @@
+{% extends "recommender/base.html" %}
+
+{% block title %}
+Filmy | CineGame
+{% endblock %}
+
+{% block content %}
+<a class="back-link" href="{% url 'recommender:home' %}">
+    ← Powrót do strony głównej
+</a>
+<section class="catalog-header">
+    <p class="section-label">Katalog</p>
+
+    <h1>Filmy</h1>
+
+    <p class="catalog-description">
+        Przeglądaj filmy dostępne w systemie i przechodź do ich
+        szczegółowych informacji.
+    </p>
+
+    <form class="search-form" method="get" action="{% url 'recommender:movie_list' %}">
+        <label class="sr-only" for="movie-search">
+            Wyszukaj film
+        </label>
+    
+        <input id="movie-search" name="q" type="search" value="{{ query }}" placeholder="Wpisz tytuł filmu...">
+    
+        <button type="submit">
+            Szukaj
+        </button>
+    
+        {% if query %}
+        <a class="clear-search" href="{% url 'recommender:movie_list' %}">
+            Wyczyść
+        </a>
+        {% endif %}
+    </form>
+</section>
+
+<section class="content-section">
+    <div class="section-heading">
+        <div>
+            <p class="section-label">Wszystkie pozycje</p>
+            <h2>Katalog filmów</h2>
+        </div>
+
+        <span class="item-count">
+            {{ movies|length }} pozycji
+        </span>
+    </div>
+
+    {% if movies %}
+    <div class="cards-grid">
+        {% for movie in movies %}
+        <a class="media-card-link" href="{% url 'recommender:movie_detail' movie.movie_id %}">
+            <article class="media-card">
+                <div class="media-card-image movie-placeholder">
+                    <span>Film</span>
+                </div>
+
+                <div class="media-card-content">
+                    <h3>{{ movie.title }}</h3>
+
+                    <p>
+                        {% if movie.release_year %}
+                        Rok wydania: {{ movie.release_year }}
+                        {% else %}
+                        Rok wydania: brak danych
+                        {% endif %}
+                    </p>
+
+                    {% if movie.director %}
+                    <p>
+                        Reżyser: {{ movie.director }}
+                    </p>
+                    {% endif %}
+                </div>
+            </article>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Brak filmów w bazie.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

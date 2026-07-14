@@ -1,0 +1,88 @@
+{% extends "recommender/base.html" %}
+
+{% block title %}
+Gry | CineGame
+{% endblock %}
+
+
+{% block content %}
+<a class="back-link" href="{% url 'recommender:home' %}">
+    ← Powrót do strony głównej
+</a>
+<section class="catalog-header">
+    <p class="section-label">Katalog</p>
+
+    <h1>Gry</h1>
+
+    <p class="catalog-description">
+        Przeglądaj gry dostępne w systemie i sprawdzaj ich
+        szczegółowe informacje.
+    </p>
+
+    <form class="search-form" method="get" action="{% url 'recommender:game_list' %}">
+        <label class="sr-only" for="game-search">
+            Wyszukaj grę
+        </label>
+    
+        <input id="game-search" name="q" type="search" value="{{ query }}" placeholder="Wpisz tytuł gry...">
+    
+        <button type="submit">
+            Szukaj
+        </button>
+    
+        {% if query %}
+        <a class="clear-search" href="{% url 'recommender:game_list' %}">
+            Wyczyść
+        </a>
+        {% endif %}
+    </form>
+</section>
+<section class="content-section">
+    <div class="section-heading">
+        <div>
+            <p class="section-label">Wszystkie pozycje</p>
+            <h2>Katalog gier</h2>
+        </div>
+
+        <span class="item-count">
+            {{ games|length }} pozycji
+        </span>
+    </div>
+
+    {% if games %}
+    <div class="cards-grid">
+        {% for game in games %}
+        <a class="media-card-link" href="{% url 'recommender:game_detail' game.game_id %}">
+            <article class="media-card">
+                <div class="media-card-image game-placeholder">
+                    <span>Gra</span>
+                </div>
+
+                <div class="media-card-content">
+                    <h3>{{ game.title }}</h3>
+
+                    <p>
+                        {% if game.release_year %}
+                        Rok wydania: {{ game.release_year }}
+                        {% else %}
+                        Rok wydania: brak danych
+                        {% endif %}
+                    </p>
+
+                    {% if game.developer %}
+                    <p>
+                        Producent: {{ game.developer }}
+                    </p>
+                    {% endif %}
+                </div>
+            </article>
+        </a>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Brak gier w bazie.</p>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
