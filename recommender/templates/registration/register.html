@@ -1,53 +1,93 @@
 {% extends "recommender/base.html" %}
 
-{% block title %}Rejestracja{% endblock %}
+{% block title %}Rejestracja | CineGame{% endblock %}
 
 {% block content %}
-<section class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-md-7 col-lg-6">
-            <h1 class="mb-4">Załóż konto</h1>
+<section class="auth-page">
+    <div class="auth-layout">
+        <div class="auth-presentation">
+            <div class="auth-brand-mark">C</div>
 
-            <form method="post">
-                {% csrf_token %}
+            <div>
+                <p class="auth-eyebrow">CineGame</p>
+                <h1>Odkrywaj filmy i gry stworzone dla Ciebie.</h1>
 
-                {% for field in form %}
-                <div class="mb-3">
-                    <label for="{{ field.id_for_label }}" class="form-label">
-                        {{ field.label }}
-                    </label>
+                <p class="auth-presentation-text">
+                    Oceniaj poznane tytuły, zapisuj ulubione pozycje
+                    i otrzymuj coraz lepiej dopasowane rekomendacje.
+                </p>
+            </div>
 
-                    <input
-                        type="{% if 'password' in field.name %}password{% elif field.name == 'email' %}email{% else %}text{% endif %}"
-                        name="{{ field.html_name }}" id="{{ field.id_for_label }}"
-                        value="{% if 'password' not in field.name %}{{ field.value|default:'' }}{% endif %}"
-                        class="form-control" {% if field.field.required %}required{% endif %}>
+            <div class="auth-benefits">
+                <div>
+                    <span>01</span>
+                    <p>Spersonalizowane rekomendacje</p>
+                </div>
 
-                    {% if field.help_text %}
-                    <div class="form-text">
-                        {{ field.help_text|safe }}
+                <div>
+                    <span>02</span>
+                    <p>Filmy i gry w jednym miejscu</p>
+                </div>
+
+                <div>
+                    <span>03</span>
+                    <p>Oceny, ulubione i listy</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="auth-form-panel">
+            <div class="auth-form-content">
+                <div class="auth-heading">
+                    <p class="auth-eyebrow">Nowe konto</p>
+                    <h2>Załóż konto</h2>
+                    <p>Zajmie Ci to tylko chwilę.</p>
+                </div>
+
+                <form method="post" class="auth-form">
+                    {% csrf_token %}
+
+                    {% if form.non_field_errors %}
+                    <div class="auth-error-box">
+                        {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
                     </div>
                     {% endif %}
 
-                    {% for error in field.errors %}
-                    <div class="text-danger">
-                        {{ error }}
+                    {% for field in form %}
+                    <div class="auth-field">
+                        <label for="{{ field.id_for_label }}">
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% for error in field.errors %}
+                        <p class="auth-field-error">
+                            {{ error }}
+                        </p>
+                        {% endfor %}
                     </div>
                     {% endfor %}
-                </div>
-                {% endfor %}
 
-                <button type="submit" class="btn btn-primary w-100">
-                    Zarejestruj się
-                </button>
-            </form>
+                    <p class="password-note">
+                        Hasło powinno mieć minimum 8 znaków i nie może być zbyt proste.
+                    </p>
 
-            <p class="mt-3">
-                Masz już konto?
-                <a href="{% url 'recommender:login' %}">
-                    Zaloguj się
-                </a>
-            </p>
+                    <button type="submit" class="auth-submit">
+                        Utwórz konto
+                        <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+
+                <p class="auth-switch">
+                    Masz już konto?
+                    <a href="{% url 'recommender:login' %}">
+                        Zaloguj się
+                    </a>
+                </p>
+            </div>
         </div>
     </div>
 </section>

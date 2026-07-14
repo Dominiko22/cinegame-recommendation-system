@@ -2,6 +2,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
 from . import views
+from .forms import LoginForm
 from .auth_views import register_view
 
 app_name = "recommender"
@@ -19,6 +20,7 @@ urlpatterns = [
         "login/",
         LoginView.as_view(
             template_name="registration/login.html",
+            authentication_form=LoginForm,
             redirect_authenticated_user=True,
         ),
         name="login",
