@@ -9,7 +9,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils import timezone
-
+from django.conf import settings
 
 # =========================================================
 # WALIDATORY
@@ -240,8 +240,9 @@ class Ratings(models.Model):
     rating_id = models.BigAutoField(primary_key=True)
 
     user = models.ForeignKey(
-        "Users",
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        db_column="user_id",
         related_name="ratings",
     )
     movie = models.ForeignKey(
@@ -296,8 +297,9 @@ class Interactions(models.Model):
     interaction_id = models.BigAutoField(primary_key=True)
 
     user = models.ForeignKey(
-        "Users",
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        db_column="user_id",
         related_name="interactions",
     )
     movie = models.ForeignKey(
@@ -342,8 +344,9 @@ class Recommendations(models.Model):
     recommendation_id = models.BigAutoField(primary_key=True)
 
     user = models.ForeignKey(
-        "Users",
+        settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
+        db_column="user_id",
         related_name="recommendations",
     )
     model = models.ForeignKey(
