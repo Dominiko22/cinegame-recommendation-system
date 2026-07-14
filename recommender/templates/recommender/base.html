@@ -39,9 +39,33 @@
                     Gry
                 </a>
             
-                <a href="/admin/">
+                {% if user.is_authenticated %}
+                <span class="nav-user">
+                    Zalogowany: {{ user.username }}
+                </span>
+            
+                {% if user.is_staff %}
+                <a href="{% url 'admin:index' %}">
                     Panel administratora
                 </a>
+                {% endif %}
+            
+                <form method="post" action="{% url 'recommender:logout' %}" class="logout-form">
+                    {% csrf_token %}
+            
+                    <button type="submit" class="nav-link-button">
+                        Wyloguj się
+                    </button>
+                </form>
+                {% else %}
+                <a href="{% url 'recommender:login' %}">
+                    Zaloguj się
+                </a>
+            
+                <a href="{% url 'recommender:register' %}">
+                    Rejestracja
+                </a>
+                {% endif %}
             </nav>
         </div>
     </header>

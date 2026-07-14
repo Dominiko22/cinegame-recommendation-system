@@ -537,3 +537,26 @@ a {
         width: 100%;
     }
 }
+
+.logout-form {
+    display: inline;
+    margin: 0;
+}
+
+.nav-link-button {
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
+    font: inherit;
+    cursor: pointer;
+}
+
+.nav-link-button:hover {
+    text-decoration: underline;
+}
+
+.nav-user {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}

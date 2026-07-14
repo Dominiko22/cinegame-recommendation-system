@@ -127,3 +127,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+LOGIN_URL = "recommender:home"
+LOGIN_REDIRECT_URL = "recommender:home"
+LOGOUT_REDIRECT_URL = "recommender:home"
