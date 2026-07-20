@@ -45,7 +45,7 @@ Filmy | CineGame
         </div>
 
         <span class="item-count">
-            {{ movies|length }} pozycji
+            {{ total_count }} pozycji
         </span>
     </div>
 
@@ -54,9 +54,13 @@ Filmy | CineGame
         {% for movie in movies %}
         <a class="media-card-link" href="{% url 'recommender:movie_detail' movie.movie_id %}">
             <article class="media-card">
+                {% if movie.poster_url %}
+                <img class="media-card-poster" src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+                {% else %}
                 <div class="media-card-image movie-placeholder">
                     <span>Film</span>
                 </div>
+                {% endif %}
 
                 <div class="media-card-content">
                     <h3>{{ movie.title }}</h3>
@@ -79,6 +83,26 @@ Filmy | CineGame
         </a>
         {% endfor %}
     </div>
+
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination" aria-label="Paginacja filmów">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}">
+            Poprzednia
+        </a>
+        {% endif %}
+
+        <span>
+            Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}">
+            Następna
+        </a>
+        {% endif %}
+    </nav>
+    {% endif %}
     {% else %}
     <div class="empty-state">
         <p>Brak filmów w bazie.</p>

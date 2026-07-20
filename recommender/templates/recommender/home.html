@@ -43,9 +43,13 @@ Strona główna | CineGame
         {% for movie in movies %}
         <a class="media-card-link" href="{% url 'recommender:movie_detail' movie.movie_id %}">
             <article class="media-card">
+                {% if movie.poster_url %}
+                <img class="media-card-poster" src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+                {% else %}
                 <div class="media-card-image movie-placeholder">
                     <span>Film</span>
                 </div>
+                {% endif %}
 
                 <div class="media-card-content">
                     <h3>{{ movie.title }}</h3>

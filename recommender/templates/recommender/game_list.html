@@ -45,7 +45,7 @@ Gry | CineGame
         </div>
 
         <span class="item-count">
-            {{ games|length }} pozycji
+            {{ total_count }} pozycji
         </span>
     </div>
 
@@ -79,6 +79,26 @@ Gry | CineGame
         </a>
         {% endfor %}
     </div>
+
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination" aria-label="Paginacja gier">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}">
+            Poprzednia
+        </a>
+        {% endif %}
+
+        <span>
+            Strona {{ page_obj.number }} z {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if query %}&q={{ query|urlencode }}{% endif %}">
+            Następna
+        </a>
+        {% endif %}
+    </nav>
+    {% endif %}
     {% else %}
     <div class="empty-state">
         <p>Brak gier w bazie.</p>

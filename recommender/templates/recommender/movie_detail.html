@@ -11,9 +11,13 @@
     </a>
 
     <div class="detail-layout">
-        <div class="detail-poster movie-placeholder">
+        {% if movie.poster_url %}
+        <img class="detail-poster-image" src="{{ movie.poster_url }}" alt="{{ movie.title }}">
+        {% else %}
+        <div class="media-card-image movie-placeholder">
             <span>Film</span>
         </div>
+        {% endif %}
 
         <div class="detail-content">
             <p class="section-label">
@@ -32,6 +36,12 @@
                 {% if movie.duration_min %}
                 <span>
                     Czas: {{ movie.duration_min }} min
+                </span>
+                {% endif %}
+
+                {% if movie.tmdb_id %}
+                <span>
+                    TMDb ID: {{ movie.tmdb_id }}
                 </span>
                 {% endif %}
             </div>
