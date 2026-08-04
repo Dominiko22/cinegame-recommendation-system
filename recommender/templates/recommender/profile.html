@@ -1,0 +1,116 @@
+{% extends "recommender/base.html" %}
+
+{% block title %}
+Mój profil | CineGame
+{% endblock %}
+
+{% block content %}
+<section class="catalog-header">
+    <p class="section-label">Profil</p>
+    <h1>Mój profil</h1>
+
+    <p class="catalog-description">
+        Twoje konto, oceny, ulubione pozycje i lista do obejrzenia.
+    </p>
+</section>
+
+<section class="content-section">
+    <div class="section-heading">
+        <div>
+            <p class="section-label">Twoja biblioteka</p>
+            <h2>Ulubione</h2>
+        </div>
+    </div>
+
+    {% if favorites %}
+    <div class="profile-favorites-grid">
+        {% for interaction in favorites %}
+        {% if interaction.movie %}
+        <a class="media-card-link" href="{% url 'recommender:movie_detail' interaction.movie.movie_id %}">
+            <article class="media-card">
+                {% if interaction.movie.poster_url %}
+                <img class="media-card-poster" src="{{ interaction.movie.poster_url }}"
+                    alt="{{ interaction.movie.title }}">
+                {% else %}
+                <div class="media-card-image movie-placeholder">
+                    <span>Film</span>
+                </div>
+                {% endif %}
+
+                <div class="media-card-content">
+                    <h3>{{ interaction.movie.title }}</h3>
+                    <p>Dodano: {{ interaction.created_at|date:"d.m.Y H:i" }}</p>
+                </div>
+            </article>
+        </a>
+        {% else %}
+        <article class="media-card">
+            <div class="media-card-image game-placeholder">
+                <span>Gra</span>
+            </div>
+
+            <div class="media-card-content">
+                <h3>{{ interaction.game.title }}</h3>
+                <p>Dodano: {{ interaction.created_at|date:"d.m.Y H:i" }}</p>
+            </div>
+        </article>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Nie masz jeszcze ulubionych pozycji.</p>
+    </div>
+    {% endif %}
+</section>
+
+<section class="content-section">
+    <div class="section-heading">
+        <div>
+            <p class="section-label">Aktywność</p>
+            <h2>Moje ostatnie oceny</h2>
+        </div>
+    </div>
+
+    {% if ratings %}
+    <div class="cards-grid">
+        {% for rating in ratings %}
+        <article class="media-card">
+            <div class="media-card-content">
+                <h3>
+                    {% if rating.movie %}
+                    {{ rating.movie.title }}
+                    {% else %}
+                    {{ rating.game.title }}
+                    {% endif %}
+                </h3>
+
+                <p>Ocena: {{ rating.score }}/10</p>
+                <p>{{ rating.rated_at|date:"d.m.Y H:i" }}</p>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>Nie masz jeszcze ocen.</p>
+    </div>
+    {% endif %}
+</section>
+
+<section class="content-section">
+    <details class="profile-details">
+        <summary>
+            <span>
+                Dane użytkownika
+            </span>
+        </summary>
+
+        <div class="profile-details-content">
+            <p>Nazwa użytkownika: {{ user.username }}</p>
+            <p>E-mail: {{ user.email|default:"Brak adresu e-mail" }}</p>
+            <p>Data dołączenia: {{ user.date_joined|date:"d.m.Y H:i" }}</p>
+        </div>
+    </details>
+</section>
+{% endblock %}

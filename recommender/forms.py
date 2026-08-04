@@ -1,6 +1,7 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from .models import Ratings
 
 
 User = get_user_model()
@@ -101,3 +102,21 @@ class LoginForm(AuthenticationForm):
             }
         ),
     )
+
+class MovieRatingForm(forms.ModelForm):
+    class Meta:
+        model = Ratings
+        fields = ("score",)
+        labels = {
+            "score": "Twoja ocena",
+        }
+        widgets = {
+            "score": forms.NumberInput(
+                attrs={
+                    "class": "auth-input",
+                    "min": 1,
+                    "max": 10,
+                    "step": 1,
+                }
+            ),
+        }

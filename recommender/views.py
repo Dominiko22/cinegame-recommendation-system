@@ -1,7 +1,9 @@
-from django.core.paginator import Paginator
+﻿from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, render
-
-from .models import Games, Movies
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect
+from .models import Games, Interactions, Movies, Ratings
+from .forms import MovieRatingForm
 
 ITEMS_PER_PAGE = 12
 
@@ -70,8 +72,29 @@ def movie_detail(request, movie_id):
         movie_id=movie_id,
     )
 
+    is_favorite = False
+    user_rating = None
+    rating_form = MovieRatingForm()
+
+    if request.user.is_authenticated:
+        user_rating = request.user.ratings.filter(movie=movie).first()
+
+    if user_rating:
+        rating_form = MovieRatingForm(instance=user_rating)
+
+    if request.user.is_authenticated:
+        is_favorite = request.user.interactions.filter(
+            movie=movie,
+            interaction_type=Interactions.InteractionType.FAVORITE,
+        ).exists()
+
+        
+
     context = {
         "movie": movie,
+        "is_favorite": is_favorite,
+        "user_rating": user_rating,
+        "rating_form": rating_form,
     }
 
     return render(
@@ -96,3 +119,67 @@ def game_detail(request, game_id):
         "recommender/game_detail.html",
         context,
     )
+
+
+@login_required
+def profile(request):
+    ratings = request.user.ratings.select_related(
+        "movie", "game").order_by("-rated_at")[:10]
+
+    favorites = request.user.interactions.filter(
+        interaction_type="favorite"
+    ).select_related("movie", "game").order_by("-created_at")[:10]
+
+    watchlist = request.user.interactions.filter(
+        interaction_type="watchlist"
+    ).select_related("movie", "game").order_by("-created_at")[:10]
+
+    context = {
+        "ratings": ratings,
+        "favorites": favorites,
+        "watchlist": watchlist,
+    }
+
+    return render(request, "recommender/profile.html", context)
+
+
+@login_required
+def toggle_movie_favorite(request, movie_id):
+    movie = get_object_or_404(Movies, movie_id=movie_id)
+
+    interaction, created = Interactions.objects.get_or_create(
+        user=request.user,
+        movie=movie,
+        interaction_type=Interactions.InteractionType.FAVORITE,
+        defaults={
+            "game": None,
+        },
+    )
+
+    if not created:
+        interaction.delete()
+
+    return redirect("recommender:movie_detail", movie_id=movie.movie_id)
+
+
+@login_required
+def rate_movie(request, movie_id):
+    movie = get_object_or_404(Movies, movie_id=movie_id)
+
+    rating = request.user.ratings.filter(movie=movie).first()
+
+    if rating is None:
+        rating = Ratings(
+            user=request.user,
+            movie=movie,
+            game=None,
+        )
+
+    if request.method == "POST":
+        form = MovieRatingForm(request.POST, instance=rating)
+
+        if form.is_valid():
+            form.save()
+
+    return redirect("recommender:movie_detail", movie_id=movie.movie_id)
+

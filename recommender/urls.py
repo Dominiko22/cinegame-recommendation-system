@@ -48,4 +48,18 @@ urlpatterns = [
         views.game_detail,
         name="game_detail",
     ),
+
+    path("profile/", views.profile, name="profile"),
+
+    path(
+        "movies/<int:movie_id>/favorite/",
+        views.toggle_movie_favorite,
+        name="toggle_movie_favorite",
+    ),
+
+    path(
+        "movies/<int:movie_id>/rate/",
+        views.rate_movie,
+        name="rate_movie",
+    ),
 ]

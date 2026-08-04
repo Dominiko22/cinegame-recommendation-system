@@ -939,3 +939,132 @@ a {
     object-fit: cover;
     box-shadow: 0 24px 55px rgba(0, 0, 0, 0.24);
 }
+
+.detail-page {
+    padding-block: 18px 58px;
+}
+
+.detail-page .back-link {
+    margin-bottom: 22px;
+}
+
+.detail-layout {
+    max-width: 1040px;
+    display: grid;
+    grid-template-columns: 300px minmax(0, 1fr);
+    gap: 34px;
+    align-items: start;
+    padding: 26px;
+    border: 1px solid rgba(148, 163, 184, 0.16);
+    border-radius: 14px;
+    background: rgba(17, 24, 39, 0.42);
+}
+
+.detail-poster-image {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    display: block;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    object-fit: cover;
+    box-shadow: 0 20px 42px rgba(0, 0, 0, 0.28);
+}
+
+.detail-content h1 {
+    font-size: clamp(2.35rem, 5vw, 3.7rem);
+}
+
+.detail-meta {
+    margin-top: 18px;
+}
+
+.detail-group {
+    margin-top: 30px;
+}
+
+.detail-group p {
+    max-width: 680px;
+}
+
+.detail-content form {
+    margin-top: 18px;
+}
+
+.detail-content form .catalog-link {
+    min-height: 44px;
+    padding-inline: 18px;
+    border-color: rgba(167, 139, 250, 0.48);
+    background: rgba(124, 58, 237, 0.2);
+    color: var(--text);
+    font-weight: 800;
+}
+
+.detail-content form .catalog-link:hover {
+    background: rgba(124, 58, 237, 0.34);
+}
+
+@media (max-width: 800px) {
+    .detail-layout {
+        grid-template-columns: 1fr;
+        padding: 18px;
+    }
+
+    .detail-poster-image {
+        max-width: 320px;
+    }
+}
+
+.profile-details {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: rgba(17, 24, 39, 0.55);
+}
+
+.profile-details summary {
+    min-height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.profile-details summary::after {
+    content: "+";
+    color: var(--primary-light);
+    font-size: 1.3rem;
+}
+
+.profile-details[open] summary::after {
+    content: "-";
+}
+
+.profile-details-content {
+    padding: 0 18px 18px;
+    color: var(--text-muted);
+}
+
+.profile-details-content p {
+    margin: 8px 0;
+}
+
+.profile-favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 220px));
+    gap: 14px;
+}
+
+.rating-form {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.rating-form input {
+    width: 110px;
+    min-height: 44px;
+}

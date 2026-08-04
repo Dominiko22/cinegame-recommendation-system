@@ -46,7 +46,53 @@
                 {% endif %}
             </div>
 
+                        {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'recommender:toggle_movie_favorite' movie.movie_id %}">
+                            {% csrf_token %}
+                        
+                            <button type="submit" class="catalog-link">
+                                {% if is_favorite %}
+                                Usuń z ulubionych
+                                {% else %}
+                                Dodaj do ulubionych
+                                {% endif %}
+                            </button>
+                        </form>
+                        {% else %}
+                        <p class="muted-text">
+                            Zaloguj się, aby dodać film do ulubionych.
+                        </p>
+                        {% endif %}
+
             {% if movie.director %}
+            <div class="detail-group">
+                <h2>Twoja ocena</h2>
+            
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'recommender:rate_movie' movie.movie_id %}" class="rating-form">
+                    {% csrf_token %}
+                    {{ rating_form.score }}
+                
+                    <button type="submit" class="catalog-link">
+                        {% if user_rating %}
+                        Zmień ocenę
+                        {% else %}
+                        Oceń film
+                        {% endif %}
+                    </button>
+                </form>
+            
+                {% if user_rating %}
+                <p class="muted-text">
+                    Aktualna ocena: {{ user_rating.score }}/10
+                </p>
+                {% endif %}
+                {% else %}
+                <p class="muted-text">
+                    Zaloguj się, aby ocenić film.
+                </p>
+                {% endif %}
+            </div>
             <div class="detail-group">
                 <h2>Reżyser</h2>
                 <p>{{ movie.director }}</p>
